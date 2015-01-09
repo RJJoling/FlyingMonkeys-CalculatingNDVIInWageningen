@@ -2,9 +2,9 @@
 # Flying Monkeys           Robbert-Jan Joling          08-01-2015
 #                          Damiano Luzzi
 
-
 # Import packages ---------------------------------------------------------
 library(rgdal)
+
 
 # Source functions --------------------------------------------------------
 source('R/SelectBands.R')
@@ -34,22 +34,28 @@ crop.NDVI.1990.2014 <- MatchExtent(clean.NDVI.1990, clean.NDVI.2014)
 # Visualise intermediate outputs ------------------------------------------
 
 # Plot NDVI 1990 (original, cleaned, cropped)
-plot(NDVI.1990)
-plot(clean.NDVI.1990)
-plot(crop.NDVI.1990.2014[[1]])
+plot(NDVI.1990, main = "Raw NDVI 1990", ylab = "Latitude", xlab = "Longitude")
+plot(clean.NDVI.1990, main = "Cloud Adjusted NDVI 1990", ylab = "Latitude", xlab = "Longitude")
+plot(crop.NDVI.1990.2014[[1]], main = "NDVI 1990", ylab = "Latitude", xlab = "Longitude")
 
 # Plot NDVI 2014 (original, cleaned, cropped)
-plot(NDVI.2014)
-plot(clean.NDVI.2014)
-plot(crop.NDVI.1990.2014[[2]])
+plot(NDVI.2014, main = "Raw NDVI 2014", ylab = "Latitude", xlab = "Longitude")
+plot(clean.NDVI.2014, main = "Cloud Adjusted NDVI 2014", ylab = "Latitude", xlab = "Longitude")
+plot(crop.NDVI.1990.2014[[2]], main = "NDVI 2014", ylab = "Latitude", xlab = "Longitude")
 
 
 # Final output ------------------------------------------------------------
 
 NDVI.change <- crop.NDVI.1990.2014[[2]] - crop.NDVI.1990.2014[[1]]
-writeRaster(x = NDVI.change, filename = 'output/Change_NDVI_Wageningen_1990_2014.grd', datatype = 'FLT4S')
-plot(NDVI.change)
+writeRaster(x = NDVI.change, filename = 'output/Change_NDVI_Wageningen_1990_2014.grd', datatype = 'FLT4S', overwrite = TRUE)
+plot(NDVI.change, main = "NDVI Change Wageningen 1990-2014", ylab = "Latitude", xlab = "Longitude")
 
 
+# Tests -------------------------------------------------------------------
 
+plot(LS5.1990[[1]], main = "1990 LS5 band 3 (red)")
+plot(LS5.1990[[2]], main = "1990 LS5 band 4 (NIR)")
+
+plot(LS8.2014[[1]], main = "2014 LS8 band 4 (red)")
+plot(LS8.2014[[2]], main = "2014 LS8 band 5 (NIR)")
 
